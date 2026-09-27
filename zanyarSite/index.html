@@ -1,0 +1,526 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZANYAR | Digital World</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #050505;
+    color: white;
+    overflow-x: hidden;
+}
+
+/* Arka plan */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0,255,170,.12), transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(0,120,255,.12), transparent 25%);
+    pointer-events: none;
+    z-index: -2;
+}
+
+canvas {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: .55;
+}
+
+/* NAVBAR */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(5,5,5,.65);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    z-index: 100;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    color: #00ffaa;
+    text-shadow: 0 0 20px #00ffaa;
+}
+
+nav a {
+    color: #aaa;
+    text-decoration: none;
+    margin-left: 30px;
+    transition: .3s;
+}
+
+nav a:hover {
+    color: #00ffaa;
+    text-shadow: 0 0 15px #00ffaa;
+}
+
+/* HERO */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 20px 40px;
+}
+
+.status {
+    display: inline-block;
+    padding: 8px 15px;
+    border: 1px solid #00ffaa;
+    border-radius: 50px;
+    color: #00ffaa;
+    font-size: 13px;
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px rgba(0,255,170,.15);
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(70px, 15vw, 180px);
+    line-height: .85;
+    letter-spacing: 15px;
+    font-weight: 900;
+    background: linear-gradient(90deg, #fff, #00ffaa, #00aaff, #fff);
+    background-size: 300%;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: gradient 5s infinite linear;
+}
+
+@keyframes gradient {
+    to { background-position: 300%; }
+}
+
+.hero p {
+    margin-top: 30px;
+    color: #aaa;
+    font-size: 18px;
+    letter-spacing: 3px;
+}
+
+.buttons {
+    margin-top: 40px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 28px;
+    margin: 8px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid #333;
+    background: rgba(255,255,255,.04);
+    transition: .3s;
+}
+
+.btn:hover {
+    transform: translateY(-5px);
+    border-color: #00ffaa;
+    box-shadow: 0 10px 35px rgba(0,255,170,.2);
+}
+
+.primary {
+    background: #00ffaa;
+    color: #00140d;
+    font-weight: bold;
+    border-color: #00ffaa;
+}
+
+/* SECTIONS */
+section {
+    max-width: 1150px;
+    margin: auto;
+    padding: 120px 25px;
+}
+
+.section-title {
+    font-size: 42px;
+    margin-bottom: 50px;
+}
+
+.section-title span {
+    color: #00ffaa;
+}
+
+/* CARDS */
+.projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    padding: 30px;
+    min-height: 230px;
+    border-radius: 18px;
+    background: rgba(255,255,255,.035);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+    transition: .4s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    border-color: #00ffaa;
+    box-shadow: 0 20px 50px rgba(0,255,170,.1);
+}
+
+.icon {
+    font-size: 38px;
+    margin-bottom: 20px;
+}
+
+.card h3 {
+    margin-bottom: 12px;
+}
+
+.card p {
+    color: #888;
+    line-height: 1.6;
+}
+
+/* TERMINAL */
+.terminal {
+    background: #090909;
+    border: 1px solid #222;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 20px 70px rgba(0,0,0,.5);
+}
+
+.terminal-top {
+    padding: 13px 18px;
+    background: #111;
+    color: #777;
+}
+
+.dot {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #444;
+    margin-right: 7px;
+}
+
+.terminal-body {
+    padding: 30px;
+    font-family: monospace;
+    color: #00ffaa;
+    line-height: 2;
+}
+
+.white {
+    color: white;
+}
+
+.gray {
+    color: #777;
+}
+
+/* ABOUT */
+.about {
+    max-width: 750px;
+    color: #aaa;
+    line-height: 1.9;
+    font-size: 18px;
+}
+
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 50px 20px;
+    border-top: 1px solid #151515;
+    color: #666;
+}
+
+footer strong {
+    color: #00ffaa;
+}
+
+/* MOBİL */
+@media(max-width: 700px) {
+    nav {
+        padding: 18px 20px;
+    }
+
+    nav div:last-child {
+        display: none;
+    }
+
+    .hero h1 {
+        letter-spacing: 6px;
+    }
+
+    section {
+        padding: 80px 20px;
+    }
+
+    .section-title {
+        font-size: 32px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<!-- NAVBAR -->
+<nav>
+    <div class="logo">ZANYAR</div>
+
+    <div>
+        <a href="#projects">Projeler</a>
+        <a href="#terminal">Terminal</a>
+        <a href="#about">Hakkımda</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+
+    <div>
+
+        <div class="status">
+            ● SYSTEM ONLINE
+        </div>
+
+        <h1>ZANYAR</h1>
+
+        <p>
+            CODE • CREATE • PLAY • REPEAT
+        </p>
+
+        <div class="buttons">
+            <a class="btn primary" href="#projects">
+                PROJELERİ GÖR
+            </a>
+
+            <a class="btn" href="#terminal">
+                TERMINAL
+            </a>
+        </div>
+
+    </div>
+
+</header>
+
+<!-- PROJELER -->
+<section id="projects">
+
+    <h2 class="section-title">
+        Benim <span>Projelerim</span>
+    </h2>
+
+    <div class="projects">
+
+        <div class="card">
+            <div class="icon">🎮</div>
+            <h3>ZyroMC</h3>
+            <p>
+                Kendi Minecraft sunucu projem.
+                SkyBlock, OneBlock ve daha fazlası.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">💻</div>
+            <h3>Kodlama</h3>
+            <p>
+                Python, web geliştirme ve farklı
+                programlama projeleri üzerinde çalışıyorum.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">📱</div>
+            <h3>Mobil Oyun</h3>
+            <p>
+                Android için kendi oyun fikirlerimi
+                geliştiriyorum.
+            </p>
+        </div>
+
+        <div class="card">
+            <div class="icon">🤖</div>
+            <h3>AI Projects</h3>
+            <p>
+                Yapay zekâ ve bilgisayarlı görü
+                projeleriyle deneyler yapıyorum.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- TERMINAL -->
+<section id="terminal">
+
+    <h2 class="section-title">
+        <span>Terminal</span>
+    </h2>
+
+    <div class="terminal">
+
+        <div class="terminal-top">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+            zanyar@system
+        </div>
+
+        <div class="terminal-body">
+
+            <div>
+                <span class="gray">zanyar@system:~$</span>
+                whoami
+            </div>
+
+            <div class="white">
+                Zanyar
+            </div>
+
+            <div>
+                <span class="gray">zanyar@system:~$</span>
+                skills
+            </div>
+
+            <div class="white">
+                Coding • Gaming • Web • AI
+            </div>
+
+            <div>
+                <span class="gray">zanyar@system:~$</span>
+                status
+            </div>
+
+            <div>
+                ONLINE ✓
+            </div>
+
+            <div>
+                <span class="gray">zanyar@system:~$</span>
+                _
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+
+    <h2 class="section-title">
+        <span>Hakkımda</span>
+    </h2>
+
+    <p class="about">
+        Teknoloji, kodlama, oyun geliştirme ve bilgisayarlarla
+        uğraşmayı seviyorum. Yeni projeler geliştiriyor,
+        öğrendiklerimi gerçek projelerde kullanıyorum.
+        Bu site de benim dijital alanım.
+    </p>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>
+        © 2026 <strong>ZANYAR</strong> — Built with code.
+    </p>
+</footer>
+
+<script>
+
+/* PARTICLE SYSTEM */
+
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+
+let particles = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize", resize);
+
+for(let i = 0; i < 90; i++) {
+
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1,
+        speedX: (Math.random() - .5) * .5,
+        speedY: (Math.random() - .5) * .5
+    });
+
+}
+
+function animate() {
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    for(let p of particles) {
+
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if(p.x < 0) p.x = canvas.width;
+        if(p.x > canvas.width) p.x = 0;
+
+        if(p.y < 0) p.y = canvas.height;
+        if(p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+
+        ctx.fillStyle = "#00ffaa";
+        ctx.fill();
+
+    }
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
+```
